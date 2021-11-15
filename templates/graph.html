@@ -1,0 +1,46 @@
+{% extends "result.html" %}{% block graph %}
+<canvas id="myBarChart"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+
+<script>
+  var ctx = document.getElementById('myBarChart')
+  var myBarChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [
+        {{graph_labels|safe}}
+      ],
+      datasets: [
+        {
+          label: '件数',
+          data: [{{graph_data|safe}}],
+          backgroundColor: 'rgba(219,39,91,0.5)'
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: '価格帯別売り切れ商品件数'
+      },
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              suggestedMax: {{graph_max|safe}},
+              suggestedMin: 0,
+              stepSize: {{graph_stepsize|safe}},
+              callback: function (value, index, values) {
+                return value + '件'
+              }
+            }
+          }
+        ]
+      }
+    }
+  })
+</script>
+{% endblock %}
